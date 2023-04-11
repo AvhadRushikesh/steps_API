@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using steps_API.Model;
 
 namespace steps_API.Data
 {
@@ -8,5 +9,7 @@ namespace steps_API.Data
         {
             
         }
+
+        public DbSet<Movie> Movies { get; set; }
     }
 }
