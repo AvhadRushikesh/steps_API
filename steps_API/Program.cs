@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using steps_API.AutoMapper;
 using steps_API.Data;
 using steps_API.Model;
+using steps_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,11 @@ builder.Services.AddCors(options =>
 
 //  Configure Serilog and Seq
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
+
+//  Use AutoMapper
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 var app = builder.Build();
 
