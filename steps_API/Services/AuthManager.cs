@@ -23,18 +23,36 @@ namespace steps_API.Services
             this._configuration = configuration;
         }
 
-        public async Task<bool> Login(LoginDto loginDto)
+        public async Task<AuthResponseDto> Login(LoginDto loginDto)
         {
-            bool isValidUser = false;
-            try
+            //bool isValidUser = false;
+            //try
+            //{
+            //    var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            //    var validPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            //}
+            //catch (Exception)
+            //{
+            //}
+            //if (isValidUser)
+            //{
+            //    var token = GenerateToken(user);
+            //}
+
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            bool isValidUser = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (user == null || isValidUser == false)
             {
-                var user = await _userManager.FindByEmailAsync(loginDto.Email);
-                var validPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                return null;
             }
-            catch (Exception)
+
+            var token = await GenerateToken(user);
+            return new AuthResponseDto
             {
-            }
-            return isValidUser;
+                Token = token,
+                UserId = user.Id
+            };
         }
 
         public async Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto)

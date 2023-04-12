@@ -7,6 +7,6 @@ namespace steps_API.Services
     {
         Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto);
 
-        Task<bool> Login(LoginDto loginDto);
+        Task<AuthResponseDto> Login(LoginDto loginDto);
     }
 }
