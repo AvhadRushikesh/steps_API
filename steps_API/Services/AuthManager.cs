@@ -15,6 +15,21 @@ namespace steps_API.Services
             this._mapper = mapper;
             this._userManager = userManager;
         }
+
+        public async Task<bool> Login(LoginDto loginDto)
+        {
+            bool isValidUser = false;
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(loginDto.Email);
+                var validPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+            }
+            catch (Exception)
+            {
+            }
+            return isValidUser;
+        }
+
         public async Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto)
         {
             var user = _mapper.Map<ApiUser>(userDto);
@@ -27,7 +42,6 @@ namespace steps_API.Services
                 await _userManager.AddToRoleAsync(user, "User");
             }
             return result.Errors;
-
         }
     }
 }
